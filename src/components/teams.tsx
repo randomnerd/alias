@@ -1,14 +1,15 @@
+import { values } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
 import {
     Button,
     Icon,
     Input,
     Card,
 } from 'semantic-ui-react';
-import { Team, TeamStore } from '../stores/teams.store'
+import { CommonStore } from '../stores/common.store';
+import { Team } from '../stores/teams.store'
 
-const TeamView = observer(({ team, store }: { team: Team, store: TeamStore }) => {
+const TeamView = observer(({ team, store }: { team: Team, store: CommonStore }) => {
     return (
         <Card fluid>
             <Card.Content>
@@ -26,27 +27,22 @@ const TeamView = observer(({ team, store }: { team: Team, store: TeamStore }) =>
     )
 })
 
-const TeamListView = observer(({ store }: { store: TeamStore }) => {
+const TeamListView = observer(({ store }: { store: CommonStore }) => {
     return (
         <Card.Group>
-            {store.teams.map(team => (<TeamView team={team} store={store} key={team.name} />))}
+            {values(store.teams).map(team => (<TeamView team={team} store={store} key={team.name} />))}
         </Card.Group>
     )
 })
 
-function Teams() {
-    const [teams] = useState(() => new TeamStore())
-    useEffect(() => {
-        // Called when the component is unmounted
-        return () => teams.stopStore();
-    });
-
+function Teams({ store }: { store: CommonStore }) {
     const addTeam = () => {
         const input: any = document.querySelector("#teamName")!
         const name = input.value
-        teams.addTeam(name)
+        console.log(store)
+        store.addTeam(name)
         input.value = ''
-        console.log(`Team ${name} added`, teams)
+        console.log(`Team ${name} added`, store)
     }
     const addTeamIcon = <Icon name='add' link onClick={addTeam} />
     const inputKeyUp = (e: any) => {
@@ -56,7 +52,7 @@ function Teams() {
 
     return (
         <div className="Teams">
-            <TeamListView store={teams} />
+            <TeamListView store={store} />
             <Input id='teamName' type="text" placeholder='Team name' fluid icon={addTeamIcon} onKeyUp={inputKeyUp} />
         </div>
     );

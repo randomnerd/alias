@@ -1,5 +1,4 @@
 import { makeAutoObservable, observable, get } from 'mobx';
-import { makePersistable, stopPersisting } from 'mobx-persist-store'
 
 export class Team {
     public wins = 0
@@ -13,10 +12,10 @@ export class TeamStore {
 
     constructor() {
         makeAutoObservable(this, {}, { autoBind: true })
-        makePersistable(this, {
-            name: 'TeamStore',
-            properties: ['teams'],
-        })
+        // makePersistable(this, {
+        //     name: 'TeamStore',
+        //     properties: ['teams'],
+        // })
     }
 
     addTeam(name: string) {
@@ -37,9 +36,5 @@ export class TeamStore {
 
     getTeam(name: string) {
         return get(this.teams, name)
-    }
-
-    stopStore() {
-        stopPersisting(this)
     }
 }

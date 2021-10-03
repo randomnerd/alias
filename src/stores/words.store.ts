@@ -1,5 +1,4 @@
-import { action, makeAutoObservable, observable } from 'mobx';
-import { makePersistable, stopPersisting } from 'mobx-persist-store';
+import { makeAutoObservable, observable } from 'mobx';
 
 export class Word {
     public guesses = 0
@@ -23,6 +22,14 @@ export class Word {
     }
 }
 
+export interface Category {
+    name: string
+    games: number
+    guesses: number
+    declines: number
+    words: Word[]
+}
+
 export class WordCategory {
     public games = 0
     public guesses = 0
@@ -30,7 +37,7 @@ export class WordCategory {
     public words: Word[] = observable.array([])
 
     constructor(public readonly name: string) {
-        makeAutoObservable(this, { addWord: action }, { autoBind: true })
+        makeAutoObservable(this)
     }
 
     addWord(value: string) {
@@ -63,53 +70,5 @@ export class WordCategory {
     public stats() {
         const { guesses, declines } = this
         return { guesses, declines }
-    }
-}
-
-export class WordStore {
-    public categories: WordCategory[] = observable.array([])
-
-    constructor() {
-        makeAutoObservable(this, {}, { autoBind: true })
-        makePersistable(this, {
-            name: 'WordStore',
-            properties: ['categories'],
-        })
-    }
-
-    addCategory(name: string) {
-        const category = new WordCategory(name)
-        this.categories.push(category)
-        return category
-    }
-
-    removeCategory(name: string) {
-        const idx = this.categories.findIndex(c => c.name === name)
-        const category = this.categories.splice(idx, 1)
-        console.log(`Deleted category`, category)
-    }
-
-    getCategories() {
-        return this.categories
-    }
-
-    getCategory(name: string) {
-        return this.categories.find(c => c.name === name) || this.addCategory(name)
-    }
-
-    stopStore() {
-        stopPersisting(this)
-    }
-
-    addWord(categoryName: string, word: string) {
-        const category = this.getCategory(categoryName)
-        category.words.push(new Word(word))
-    }
-
-    removeWord(categoryName: string, word: string) {
-        const category = this.getCategory(categoryName)
-        const idx = category.words.findIndex(w => w.value === word)
-        const deletedWord = category.words.splice(idx, 1)
-        console.log(`Deleted word`, deletedWord)
     }
 }

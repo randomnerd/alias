@@ -3,6 +3,9 @@ import { Team } from './teams.store';
 
 export class Game {
     public readonly teams: Team[] = observable.array([])
+    public skipWordPenalty = true
+    public wordsToWin = 30
+    public roundTime = 60
 
     constructor() {
         makeAutoObservable(this)

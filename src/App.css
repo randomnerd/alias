@@ -1,5 +1,5 @@
 body {
-  padding: 2em 1em;
+  padding: 1em;
 }
 
 .Start button {
@@ -14,4 +14,25 @@ body {
 .App .header {
   margin-top: 0 !important;
   height: 1.2em;
+}
+
+.NewGame .checkbox {
+  margin: 1em;
+  display: block;
+}
+
+.NewGame .checkbox label:before {
+  /* top: 5px !important; */
+  height: 2.2em !important;
+  width: 4.5em !important;
+}
+
+.NewGame .checkbox label:after {
+  /* top: 5px !important; */
+  height: 2.2em !important;
+  width: 2.2em !important;
+}
+
+.NewGame .checkbox.checked label:after {
+  left: 2.5em !important;
 }

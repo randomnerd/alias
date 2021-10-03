@@ -1,5 +1,6 @@
+import { runInAction, values } from 'mobx'
 import { observer } from 'mobx-react-lite';
-import { RefObject, useEffect, useRef, useState } from 'react';
+import { RefObject, useRef } from 'react';
 import {
     Button,
     Icon,
@@ -7,9 +8,10 @@ import {
     Input,
     Card,
 } from 'semantic-ui-react';
-import { Word, WordCategory, WordStore } from '../stores/words.store'
+import { CommonStore } from '../stores/common.store';
+import { Category, Word } from '../stores/words.store'
 
-const WordView = observer(({ word, category, store }: { word: Word, category: WordCategory, store: WordStore }) => {
+const WordView = observer(({ word, category, store }: { word: Word, category: Category, store: CommonStore }) => {
     return (
         <Label>
             {word.value}
@@ -18,7 +20,7 @@ const WordView = observer(({ word, category, store }: { word: Word, category: Wo
     )
 })
 
-const WordListView = observer(({ category, store }: { category: WordCategory, store: WordStore }) => {
+const WordListView = observer(({ category, store }: { category: Category, store: CommonStore }) => {
     return (
         <div>
             {category.words.map(w => (<WordView word={w} store={store} category={category} key={w.value} />))}
@@ -26,15 +28,14 @@ const WordListView = observer(({ category, store }: { category: WordCategory, st
     )
 })
 
-const CategoryView = observer(({ category, store }: { category: WordCategory, store: WordStore }) => {
+const CategoryView = observer(({ category, store }: { category: Category, store: CommonStore }) => {
+    console.dir(category)
     const addWord = () => {
         const input = inputRef.current?.inputRef.current
         const word = input?.value
         if (!word) return
-        console.dir(store)
-        store.addWord(category.name, word)
+        runInAction(() => store.addWord(category.name, word))
         input.value = ''
-        console.log(`Word ${word} added to category ${category.name}`)
     }
     const inputKeyUp = (e: any) => {
         if (e.code !== "Enter") return
@@ -74,25 +75,24 @@ const CategoryView = observer(({ category, store }: { category: WordCategory, st
     )
 })
 
-const CategoryListView = observer(({ store }: { store: WordStore }) => {
+const CategoryListView = observer(({ store }: { store: CommonStore }) => {
     return (
         <Card.Group>
-            {store.categories.map(c => (<CategoryView category={c} store={store} key={c.name} />))}
+            {
+                values(store.categories).map(c =>  (
+                    <CategoryView category={c} store={store} key={c.name} />
+                ))
+            }
         </Card.Group>
     )
 })
 
-function Categories() {
-    const [wordStore] = useState(() => new WordStore())
-    useEffect(() => {
-        // Called when the component is unmounted
-        return () => wordStore.stopStore();
-    });
+function Categories({ store }: { store: CommonStore }) {
     const addCategory = () => {
         const input = inputRef.current?.inputRef.current
         const name = input?.value
         if (!name) return
-        wordStore.addCategory(name)
+        store.addCategory(name)
         input.value = ''
         console.log(`Category ${name} added`)
     }
@@ -105,7 +105,7 @@ function Categories() {
 
     return (
         <div className="Categories">
-            <CategoryListView store={wordStore} />
+            <CategoryListView store={store} />
             <Input
                 ref={inputRef}
                 type="text"

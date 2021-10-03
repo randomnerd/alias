@@ -1,13 +1,13 @@
 import { Button, Container } from 'semantic-ui-react';
-import { commonStore } from '../stores/common.store';
+import { CommonStore } from '../stores/common.store';
 
-function Start() {
+function Start({ store }: { store: CommonStore }) {
     return (
         <Container className="Start">
             <Button.Group vertical fluid>
-                <Button primary onClick={() => commonStore.setPage('newgame')}>New game</Button>
-                <Button onClick={() => commonStore.setPage('teams')}>Manage teams</Button>
-                <Button onClick={() => commonStore.setPage('categories')}>Manage words</Button>
+                <Button primary onClick={() => store.setPage('newgame')}>New game</Button>
+                <Button onClick={() => store.setPage('teams')}>Manage teams</Button>
+                <Button onClick={() => store.setPage('categories')}>Manage words</Button>
             </Button.Group>
         </Container>
     );
