@@ -1,73 +1,55 @@
-import { observer } from 'mobx-react-lite';
-import 'semantic-ui-css/semantic.min.css';
-import './App.css';
-import Start from './components/start';
-import Teams from './components/teams';
-import { CommonStore } from './stores/common.store';
-import Categories from './components/categories';
-import { configurePersistable } from 'mobx-persist-store';
-import NewGame from './components/newgame';
-import { Button, Container, Header, Icon, Segment } from 'semantic-ui-react';
-import { useEffect, useState } from 'react';
-import { configure } from "mobx"
+import React from 'react'
+import { Route, Switch, useLocation } from 'wouter'
+// import { useTransition, animated } from 'react-spring'
+import { Button, Container, Header, Icon, Segment } from 'semantic-ui-react'
+import 'semantic-ui-css/semantic.min.css'
+import './App.css'
+import Start from './components/start'
+import Teams from './components/teams'
+// import Categories from './components/categories'
+// import NewGame from './components/newgame'
 
-configure({
-    enforceActions: "always",
-    computedRequiresReaction: true,
-    reactionRequiresObservable: true,
-    observableRequiresReaction: true,
-    disableErrorBoundaries: true
-})
-
-
-configurePersistable(
-    { storage: window.localStorage },
-    { fireImmediately: true }
-);
-
-
-const PageView = observer<{ store: CommonStore; }>(({ store }) => {
-    switch (store.getPage()) {
-        case 'teams': return <Teams store={store} />;
-        case 'newgame': return <NewGame store={store} />;
-        case 'categories': return <Categories store={store} />;
-        default: return <Start store={store} />;
-    }
-});
-
-const BackButton = observer<{ store: CommonStore; }>(({ store }) => {
-    if (store.getPage() === 'start') return null;
-    return (
-
-        <Button
-            floated='left'
-            className="back"
-            icon
-            onClick={() => store.goBack()}
-        >
-            <Icon name="arrow left" />
-        </Button>
-    );
-});
-
-function App() {
-    const [commonStore] = useState(() => new CommonStore());
-    useEffect(() => {
-        return () => commonStore.stopStore()
-    })
-    return (
-        <Container className="App">
-            <Segment basic>
-                <BackButton store={commonStore} />
-
-                <Header size="large" textAlign='center'>
-                    ALIAS
-                </Header>
-                <PageView store={commonStore} />
-
-            </Segment>
-        </Container>
-    );
+const GoBack = () => {
+    const [location] = useLocation()
+    return location === '/'
+        ? null
+        : (
+            <Button
+                floated='left'
+                className="back"
+                icon
+                onClick={() => window.history.back()}
+            >
+                <Icon name="arrow left" />
+            </Button>
+        )
 }
 
-export default App;
+const App = () => {
+    // const [location] = useLocation()
+    // const transitions = useTransition(location, (location => location), {
+    //     enter: { opacity: 1, transform: 'translate3d(0%,0,0)' },
+    //     from:  { opacity: 0, transform: 'translate3d(100%,0,0)' },
+    //     leave: { opacity: 0, transform: 'translate3d(-50%,0,0)' },
+    // })
+    // return transitions.map(({ item, props, key }) => (
+    //     <animated.div key={key} style={props}>
+    return (
+            <Container className="App">
+                <Segment basic>
+                    <GoBack/>
+                    <Header size="large" textAlign='center'>
+                        ALIAS
+                    </Header>
+                    <Switch>
+                        <Route path="/" component={Start} />
+                        <Route path="/teams" component={Teams} />
+                    </Switch>
+                </Segment>
+            </Container>
+    )
+    //     </animated.div>
+    // ))
+}
+
+export default App

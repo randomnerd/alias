@@ -1,6 +1,6 @@
 import { Checkbox, Label, Segment } from 'semantic-ui-react';
 import { Slider } from 'react-semantic-ui-range';
-import { CommonStore } from '../stores/common.store'
+import { CommonStore } from '../../stores/common.store'
 import { useState } from 'react';
 
 function NewGame({ store }: { store: CommonStore }) {

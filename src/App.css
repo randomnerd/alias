@@ -2,8 +2,8 @@ body {
   padding: 1em;
 }
 
-.Start button {
-  justify-content: center;
+.Start .button {
+  justify-content: center !important;
 }
 
 .App button.back {
@@ -35,4 +35,8 @@ body {
 
 .NewGame .checkbox.checked label:after {
   left: 2.5em !important;
+}
+
+.Teams .input {
+  margin-top: 1em !important;
 }

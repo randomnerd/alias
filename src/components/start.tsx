@@ -1,16 +1,15 @@
-import { Button, Container } from 'semantic-ui-react';
-import { CommonStore } from '../stores/common.store';
+import React from 'react';
+import { Button, Container } from 'semantic-ui-react'
+import { Link } from 'wouter'
 
-function Start({ store }: { store: CommonStore }) {
-    return (
-        <Container className="Start">
-            <Button.Group vertical fluid>
-                <Button primary onClick={() => store.setPage('newgame')}>New game</Button>
-                <Button onClick={() => store.setPage('teams')}>Manage teams</Button>
-                <Button onClick={() => store.setPage('categories')}>Manage words</Button>
-            </Button.Group>
-        </Container>
-    );
-}
+const Start = () => (
+    <Container className="Start">
+        <Button.Group vertical fluid>
+            <Button primary>New game</Button>
+            <Link href="/teams"><Button>Manage teams</Button></Link>
+            <Button>Manage words</Button>
+        </Button.Group>
+    </Container>
+);
 
-export default Start;
+export default Start

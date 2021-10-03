@@ -1,15 +1,76 @@
-import { values } from 'mobx';
-import { observer } from 'mobx-react-lite';
+import React from 'react'
 import {
     Button,
     Icon,
     Input,
     Card,
-} from 'semantic-ui-react';
-import { CommonStore } from '../stores/common.store';
-import { Team } from '../stores/teams.store'
+    Segment
+} from 'semantic-ui-react'
+import { persist } from 'effector-storage/local'
+import { createStore, createApi } from 'effector'
+import { useList, useStore, useStoreMap } from 'effector-react'
 
-const TeamView = observer(({ team, store }: { team: Team, store: CommonStore }) => {
+interface Team {
+    name: string
+    wins: number
+}
+
+interface TeamList { [name: string]: Team }
+
+const newTeam = (name: string): Team => ({ name, wins: 0 })
+const $teamInput = createStore('')
+const teamInputApi = createApi($teamInput, {
+    setValue: (_, value: string) => value
+})
+const $teams = createStore<TeamList>({})
+const $teamNames = $teams.map(teams => Object.keys(teams))
+const teamApi = createApi($teams, {
+    create(state, name: string): TeamList | undefined {
+        if (!name || name in state) return
+        return { ...state, [name]: newTeam(name) }
+    },
+    addTeam(state: TeamList, team: Team) {
+        if (team.name in state) return
+        return { ...state, [team.name]: team }
+    },
+    removeTeam(state: TeamList, name: string) {
+        if (!name || !(name in state)) return
+        state = { ...state }
+        delete state[name]
+        return state
+    },
+    teamWon(state: TeamList, name: string) {
+        const teamCopy = { ...state[name] }
+        teamCopy.wins++
+        return { ...state, [name]: teamCopy }
+    }
+})
+const changeTeamInput = teamInputApi.setValue.prepend(
+    (e: any) => e.currentTarget.value
+)
+const submitTeam = teamApi.create.prepend(
+    (e: any) => e.currentTarget.value
+)
+const submitRemoveTeam = teamApi.removeTeam.prepend(
+    (e: any) => e.currentTarget.Team.value
+)
+
+const useTeam = (name: string) => useStoreMap({
+    store: $teams,
+    keys: [name],
+    fn(state: TeamList, [_name]: string[]): Team | null {
+        if (_name in state) return state[_name]
+        return null
+    },
+})
+
+persist({ store: $teams, key: 'teams' })
+persist({ store: $teamInput, key: 'teamInput' })
+
+
+const TeamView = ({ teamName }: { teamName: string }) => {
+    const team = useTeam(teamName)
+    if (!team) return (<div></div>)
     return (
         <Card fluid>
             <Card.Content>
@@ -19,42 +80,48 @@ const TeamView = observer(({ team, store }: { team: Team, store: CommonStore }) 
                 </Card.Description>
             </Card.Content>
             <Card.Content extra>
-                <Button basic color='red' onClick={() => {
-                    store.removeTeam(team.name)
-                }}>Delete</Button>
+                <Button basic color='red' onClick={() => teamApi.removeTeam(team.name)}>
+                    Delete
+                </Button>
             </Card.Content>
         </Card>
     )
-})
+}
 
-const TeamListView = observer(({ store }: { store: CommonStore }) => {
+const TeamListView = () => {
+    const teams = useList($teamNames, name => <TeamView teamName={name} />)
     return (
         <Card.Group>
-            {values(store.teams).map(team => (<TeamView team={team} store={store} key={team.name} />))}
+            {teams}
         </Card.Group>
     )
-})
+}
 
-function Teams({ store }: { store: CommonStore }) {
+const Teams = () => {
+    const teamInputValue = useStore($teamInput)
     const addTeam = () => {
-        const input: any = document.querySelector("#teamName")!
-        const name = input.value
-        console.log(store)
-        store.addTeam(name)
-        input.value = ''
-        console.log(`Team ${name} added`, store)
+        teamApi.create(teamInputValue)
+        teamInputApi.setValue('')
     }
-    const addTeamIcon = <Icon name='add' link onClick={addTeam} />
+    const addTeamIcon = <Icon name='add' link onClick={addTeam}/>
     const inputKeyUp = (e: any) => {
         if (e.code !== "Enter") return
         addTeam()
     }
 
     return (
-        <div className="Teams">
-            <TeamListView store={store} />
-            <Input id='teamName' type="text" placeholder='Team name' fluid icon={addTeamIcon} onKeyUp={inputKeyUp} />
-        </div>
+        <Segment className="Teams">
+            <TeamListView />
+            <Input fluid
+                id='teamName'
+                type="text"
+                placeholder='Team name'
+                icon={addTeamIcon}
+                onKeyUp={inputKeyUp}
+                onChange={changeTeamInput}
+                value={teamInputValue}
+            />
+        </Segment>
     );
 }
 

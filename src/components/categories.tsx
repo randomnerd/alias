@@ -1,5 +1,5 @@
-import { runInAction, values } from 'mobx'
-import { observer } from 'mobx-react-lite';
+// import { runInAction, values } from 'mobx'
+// import { observer } from 'mobx-react-lite';
 import { RefObject, useRef } from 'react';
 import {
     Button,
@@ -8,33 +8,34 @@ import {
     Input,
     Card,
 } from 'semantic-ui-react';
-import { CommonStore } from '../stores/common.store';
-import { Category, Word } from '../stores/words.store'
+// import { CommonStore } from '../../stores/common.store';
+// import { Category, Word } from '../../stores/words.store'
 
-const WordView = observer(({ word, category, store }: { word: Word, category: Category, store: CommonStore }) => {
-    return (
-        <Label>
-            {word.value}
-            <Icon name='close' link onClick={() => store.removeWord(category.name, word.value)} />
-        </Label>
-    )
-})
+const WordView = ({ word }: any) => (
+    <Label>
+        {/* {word.value} */}
+        <Icon name='close' link />
+    </Label>
+)
 
-const WordListView = observer(({ category, store }: { category: Category, store: CommonStore }) => {
-    return (
-        <div>
-            {category.words.map(w => (<WordView word={w} store={store} category={category} key={w.value} />))}
-        </div>
-    )
-})
 
-const CategoryView = observer(({ category, store }: { category: Category, store: CommonStore }) => {
+const WordListView = ({ category }: { category: any }) => (
+    <div>
+        {
+            category.words.map((w: any) => (
+                <WordView word={w} category={category} key={w.value} />
+            ))
+        }
+    </div>
+)
+
+const CategoryView = ({ category }: { category: any }) => {
     console.dir(category)
     const addWord = () => {
         const input = inputRef.current?.inputRef.current
         const word = input?.value
         if (!word) return
-        runInAction(() => store.addWord(category.name, word))
+        // runInAction(() => store.addWord(category.name, word))
         input.value = ''
     }
     const inputKeyUp = (e: any) => {
@@ -49,7 +50,7 @@ const CategoryView = observer(({ category, store }: { category: Category, store:
                 <Card.Header>
                     {category.name}
                     <Button basic floated="right" color='red' onClick={() => {
-                        store.removeCategory(category.name)
+                        // store.removeCategory(category.name)
                     }}>Delete</Button>
                 </Card.Header>
                 <Card.Description>
@@ -59,7 +60,7 @@ const CategoryView = observer(({ category, store }: { category: Category, store:
                 </Card.Description>
             </Card.Content>
             <Card.Content extra>
-                <WordListView category={category} store={store} />
+                <WordListView category={category} />
             </Card.Content>
             <Card.Content extra>
                 <Input
@@ -73,26 +74,24 @@ const CategoryView = observer(({ category, store }: { category: Category, store:
             </Card.Content>
         </Card>
     )
-})
+}
 
-const CategoryListView = observer(({ store }: { store: CommonStore }) => {
-    return (
-        <Card.Group>
-            {
-                values(store.categories).map(c =>  (
-                    <CategoryView category={c} store={store} key={c.name} />
-                ))
-            }
-        </Card.Group>
-    )
-})
+const CategoryListView = () => (
+    <Card.Group>
+        {
+            // values(store.categories).map(c =>  (
+            //     <CategoryView category={c} store={store} key={c.name} />
+            // ))
+        }
+    </Card.Group>
+)
 
-function Categories({ store }: { store: CommonStore }) {
+const Categories = () => {
     const addCategory = () => {
         const input = inputRef.current?.inputRef.current
         const name = input?.value
         if (!name) return
-        store.addCategory(name)
+        // store.addCategory(name)
         input.value = ''
         console.log(`Category ${name} added`)
     }
@@ -105,7 +104,7 @@ function Categories({ store }: { store: CommonStore }) {
 
     return (
         <div className="Categories">
-            <CategoryListView store={store} />
+            <CategoryListView />
             <Input
                 ref={inputRef}
                 type="text"
