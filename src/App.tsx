@@ -1,8 +1,7 @@
-import { SWRConfig } from 'swr'
 import { Route, Switch, Router } from 'wouter'
 import { useTransition, animated } from 'react-spring'
+import React, { lazy, useCallback, useEffect, useState } from 'react'
 import { Button, Container, Header, Icon, Segment } from 'semantic-ui-react'
-import React, { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import './App.css'
 
 const currentLoc = () => window.location.hash.replace("#", "") || "/";
@@ -98,21 +97,4 @@ const App = () => (
     </div>
 )
 
-const Loader = () => (
-    <div className="LoaderWrapper">
-        <div className="Loader" />
-    </div>
-)
-
-const Layout = ({ cache }: any) => {
-    return (
-        <SWRConfig value={{ provider: () => new Map(cache) }}>
-            <Suspense fallback={<Loader />}>
-                <App />
-            </Suspense>
-        </SWRConfig>
-    );
-}
-
-
-export default Layout
+export default App
