@@ -1,10 +1,28 @@
 import { SWRConfig } from 'swr'
-import React, { lazy, Suspense } from 'react'
-import { Route, Switch, useLocation } from 'wouter'
+import { Route, Switch, Router } from 'wouter'
 import { useTransition, animated } from 'react-spring'
 import { Helmet, HelmetProvider } from 'react-helmet-async'
 import { Button, Container, Header, Icon, Segment } from 'semantic-ui-react'
+import React, { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import './App.css'
+
+const currentLoc = () => window.location.hash.replace("#", "") || "/";
+
+const useHashLocation = () => {
+  const [loc, setLoc] = useState(currentLoc());
+
+  useEffect(() => {
+    const handler = () => setLoc(currentLoc());
+
+    // subscribe on hash changes
+    window.addEventListener("hashchange", handler);
+    return () => window.removeEventListener("hashchange", handler);
+  }, []);
+
+  const navigate = useCallback(to => (window.location.hash = to), []);
+  return [loc, navigate];
+};
+
 
 const Start = lazy(() => import("./components/start"));
 const Teams = lazy(() => import("./components/teams"));
@@ -12,7 +30,7 @@ const NewGame = lazy(() => import("./components/newgame"));
 const Categories = lazy(() => import("./components/categories"));
 
 const GoBack = () => {
-    const [location] = useLocation()
+    const [location] = useHashLocation()
     return location === '/'
         ? null
         : (
@@ -28,7 +46,7 @@ const GoBack = () => {
 }
 
 const Content = () => {
-    const [location] = useLocation()
+    const [location] = useHashLocation()
     const transitions = useTransition(location, {
         initial: { opacity: 0, transform: 'translate3d(0%,0,0)' },
         from:    location === '/'
@@ -53,12 +71,15 @@ const Content = () => {
         >
             <Container>
                 <Segment basic>
-                    <Switch location={item}>
-                        <Route path="/"        component={Start} />
-                        <Route path="/teams"   component={Teams} />
-                        <Route path="/newgame" component={NewGame} />
-                        <Route path="/words"   component={Categories} />
-                    </Switch>
+                    <Router hook={useHashLocation as any}>
+                        <Switch location={item as string}>
+                            <Route path="/"        component={Start} />
+                            <Route path="/teams"   component={Teams} />
+                            <Route path="/newgame" component={NewGame} />
+                            <Route path="/words"   component={Categories} />
+                            <Route                 component={Start} />
+                        </Switch>
+                    </Router>
                 </Segment>
             </Container>
         </animated.div>
