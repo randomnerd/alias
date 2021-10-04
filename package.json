@@ -239,6 +239,7 @@
     "setprototypeof": "1.1.1",
     "http-errors": "1.7.3",
     "mime": "2.5.2",
-    "estree-walker": "1.0.1"
+    "estree-walker": "1.0.1",
+    "@typescript-eslint/scope-manager": "4.33.0"
   }
 }
