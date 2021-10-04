@@ -22,17 +22,17 @@ const NewGame = () => {
                         track: { top: "2em" },
                         trackFill: { top: "2em", backgroundColor: "#3498db" },
                         thumb: {
-                        //   backgroundColor: "purple",
-                        top: "1em",
-                        width: "2em",
-                        height: "2em"
+                            //   backgroundColor: "purple",
+                            top: "1em",
+                            width: "2em",
+                            height: "2em"
                         }
                     }}
 
                     settings={{
                         min: 10,
                         max: 200,
-                        step: 1,
+                        step: 5,
                         onChange: (value: number) => {
                             console.log(value)
                             setWordCount(value)
@@ -60,9 +60,9 @@ const NewGame = () => {
                     }}
 
                     settings={{
-                        min: 30,
+                        min: 10,
                         max: 120,
-                        step: 10,
+                        step: 5,
                         onChange: (value: number) => {
                             setRoundTime(value)
                         }
