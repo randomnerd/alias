@@ -1,13 +1,16 @@
-import React from 'react'
+import { SWRConfig } from 'swr'
+import React, { lazy, Suspense } from 'react'
+import { Helmet, HelmetProvider } from 'react-helmet-async'
 import { Route, Switch, useLocation } from 'wouter'
 import { useTransition, animated } from 'react-spring'
 import { Button, Container, Header, Icon, Segment } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css'
 import './App.css'
-import Start from './components/start'
-import Teams from './components/teams'
-import Categories from './components/categories'
 // import NewGame from './components/newgame'
+
+const Start = lazy(() => import("./components/start"));
+const Teams = lazy(() => import("./components/teams"));
+const Categories = lazy(() => import("./components/categories"));
 
 const GoBack = () => {
     const [location] = useLocation()
@@ -72,4 +75,32 @@ const App = () => (
     </div>
 )
 
-export default App
+const Loader = () => (
+    <div className="LoaderWrapper">
+        <div className="Loader" />
+    </div>
+)
+
+const Layout = ({ cache }: any) => {
+    return (
+        <SWRConfig value={{ provider: () => new Map(cache) }}>
+            <HelmetProvider>
+                <Helmet>
+                    <meta
+                        name="viewport"
+                        content="width=device-width, initial-scale=1"
+                    />
+                    <meta charSet="UTF-8" />
+                    <link rel="stylesheet" href="//cdn.esm.sh/v53/semantic-ui-css/semantic.min.css" />
+                    <title>ALIAS</title>
+                </Helmet>
+                <Suspense fallback={<Loader />}>
+                    <App />
+                </Suspense>
+            </HelmetProvider>
+        </SWRConfig>
+    );
+}
+
+
+export default Layout

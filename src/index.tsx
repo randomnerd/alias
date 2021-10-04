@@ -1,10 +1,11 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import 'raf/polyfill'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import reportWebVitals from './reportWebVitals'
+import App from './App'
+import './index.css'
 
-ReactDOM.render(
+ReactDOM.hydrate(
   <App />,
   document.getElementById('root')
 );

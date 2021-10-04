@@ -13,13 +13,16 @@
     "effector": "^22.1.1",
     "effector-react": "^22.0.4",
     "effector-storage": "^4.4.0",
+    "raf": "^3.4.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-helmet-async": "^1.1.2",
     "react-scripts": "^4.0.3",
     "react-semantic-ui-range": "^0.7.1",
     "react-spring": "^9.2.5",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^2.0.4",
+    "swr": "^1.0.1",
     "typescript": "^4.4.3",
     "web-vitals": "^2.1.0",
     "wouter": "^2.8.0-alpha.1"
@@ -47,5 +50,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "devDependencies": {}
 }
