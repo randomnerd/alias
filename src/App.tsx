@@ -30,9 +30,17 @@ const GoBack = () => {
 const Content = () => {
     const [location] = useLocation()
     const transitions = useTransition(location, {
-        from:  { opacity: 0, transform: 'translate3d(200%,0,0)'},
-        enter: { opacity: 1, transform: 'translate3d(0%,0,0)'},
-        leave: { opacity: 0, transform: 'translate3d(-200%,0,0)'} as any,
+        initial: { opacity: 0, transform: 'translate3d(0%,0,0)' },
+        from:    location === '/'
+            ? { opacity: 0, transform: 'translate3d(-200%,0,0)' }
+            : { opacity: 0, transform: 'translate3d(200%,0,0)' },
+        enter:   { opacity: 1, transform: 'translate3d(0%,0,0)' },
+        leave:   location === '/'
+            ? { opacity: 0, transform: 'translate3d(200%,0,0)' }
+            : { opacity: 0, transform: 'translate3d(-200%,0,0)' },
+        config:  {
+            duration: 300,
+        },
     })
     return transitions((props, item) => (
         <animated.div
