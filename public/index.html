@@ -3,12 +3,6 @@
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <link
-        rel="preload"
-        href="//cdn.esm.sh/v53/semantic-ui-css/semantic.min.css"
-        as="style"
-        onload="this.onload=null;this.rel='stylesheet'"
-    />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
       html {
@@ -28,6 +22,7 @@
         -moz-osx-font-smoothing: grayscale;
         height: 100%;
         width: 100%;
+        contain: content;
       }
 
       .Loader,
@@ -85,9 +80,6 @@
         transform: translate(-50%, -50%);
       }
     </style>
-    <noscript>
-      <link rel="stylesheet" href="//cdn.esm.sh/v53/semantic-ui-css/semantic.min.css">
-    </noscript>
     <meta name="theme-color" content="#000000" />
     <meta
       name="description"

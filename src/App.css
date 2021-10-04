@@ -1,3 +1,6 @@
+.container, .segment {
+  contain: content !important;
+}
 .ContentWrapper {
   position: 'absolute' !important;
   width: '100%' !important;

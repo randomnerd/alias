@@ -2,6 +2,7 @@ import { Route, Switch, Router } from 'wouter'
 import { useTransition, animated } from 'react-spring'
 import React, { lazy, useCallback, useEffect, useState } from 'react'
 import { Button, Container, Header, Icon, Segment } from 'semantic-ui-react'
+import 'semantic-ui-css/semantic.min.css'
 import './App.css'
 
 const currentLoc = () => window.location.hash.replace("#", "") || "/";
