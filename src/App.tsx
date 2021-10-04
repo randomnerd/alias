@@ -6,10 +6,10 @@ import { useTransition, animated } from 'react-spring'
 import { Button, Container, Header, Icon, Segment } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css'
 import './App.css'
-// import NewGame from './components/newgame'
 
 const Start = lazy(() => import("./components/start"));
 const Teams = lazy(() => import("./components/teams"));
+const NewGame = lazy(() => import("./components/newgame"));
 const Categories = lazy(() => import("./components/categories"));
 
 const GoBack = () => {
@@ -31,28 +31,27 @@ const GoBack = () => {
 const Content = () => {
     const [location] = useLocation()
     const transitions = useTransition(location, {
-        from:  { opacity: 0, transform: 'translate3d(100%,0,0)'},
+        from:  { opacity: 0, transform: 'translate3d(200%,0,0)'},
         enter: { opacity: 1, transform: 'translate3d(0%,0,0)'},
-        leave: { opacity: 1, transform: 'translate3d(-100%,0,0)'} as any,
+        leave: { opacity: 0, transform: 'translate3d(-200%,0,0)'} as any,
     })
     return transitions((props, item) => (
         <animated.div
-            className="ContentWrapper"
+            className="ContentWrapper ui container"
             style={{
                 ...props,
                 position: 'absolute',
                 width: '100%'
             }}
         >
-            <Container className="Content">
-                <Segment basic>
-                <Switch>
+            <Segment basic>
+                <Switch location={item}>
                     <Route path="/" component={Start} />
                     <Route path="/teams" component={Teams} />
+                    <Route path="/newgame" component={NewGame} />
                     <Route path="/words" component={Categories} />
                 </Switch>
-                </Segment>
-            </Container>
+            </Segment>
         </animated.div>
     ))
 }
@@ -61,7 +60,7 @@ const Heading = () => (
     <Container className="Heading">
         <Segment basic>
             <GoBack/>
-            <Header size="large" textAlign='center'>
+            <Header textAlign='center' size="huge">
                 ALIAS
             </Header>
         </Segment>

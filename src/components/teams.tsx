@@ -3,11 +3,12 @@ import {
     Button,
     Icon,
     Input,
-    Card
+    Card,
 } from 'semantic-ui-react'
 import { persist } from 'effector-storage/local'
 import { createStore, createApi } from 'effector'
 import { useList, useStore, useStoreMap } from 'effector-react'
+import '../css/teams.css'
 
 interface Team {
     name: string
@@ -65,17 +66,23 @@ const TeamView = ({ teamName }: { teamName: string }) => {
     const team = useTeam(teamName)
     if (!team) return (<div></div>)
     return (
-        <Card fluid>
+        <Card>
             <Card.Content>
-                <Card.Header>{team.name}</Card.Header>
+                <Card.Header>
+                    {team.name}
+                    <Button
+                        circular
+                        inverted
+                        size="mini"
+                        color="red"
+                        icon="close"
+                        floated="right"
+                        onClick={() => teamApi.removeTeam(team.name)}
+                    />
+                </Card.Header>
                 <Card.Description>
                     Wins: {team.wins}
                 </Card.Description>
-            </Card.Content>
-            <Card.Content extra>
-                <Button basic color='red' onClick={() => teamApi.removeTeam(team.name)}>
-                    Delete
-                </Button>
             </Card.Content>
         </Card>
     )
@@ -84,13 +91,13 @@ const TeamView = ({ teamName }: { teamName: string }) => {
 const TeamListView = () => {
     const teams = useList($teamNames, name => <TeamView teamName={name} />)
     return (
-        <Card.Group>
+        <Card.Group itemsPerRow={2}>
             {teams}
         </Card.Group>
     )
 }
 
-const Teams = () => {
+const NewTeamInput = () => {
     const teamInputValue = useStore($teamInput)
     const addTeam = () => {
         teamApi.create(teamInputValue)
@@ -101,21 +108,25 @@ const Teams = () => {
         if (e.code !== "Enter") return
         addTeam()
     }
-
     return (
-        <div className="Teams">
-            <Input fluid size="large"
-                id='teamName'
-                type="text"
-                placeholder='Name a new team...'
-                icon={addTeamIcon}
-                onKeyUp={inputKeyUp}
-                onChange={changeTeamInput}
-                value={teamInputValue}
-            />
-            <TeamListView />
-        </div>
-    );
+        <Input fluid
+            size="large"
+            id='teamName'
+            type="text"
+            placeholder='Name a new team...'
+            icon={addTeamIcon}
+            onKeyUp={inputKeyUp}
+            onChange={changeTeamInput}
+            value={teamInputValue}
+        />
+    )
 }
+
+const Teams = () => (
+    <div className="Teams">
+        <NewTeamInput />
+        <TeamListView />
+    </div>
+)
 
 export default Teams;

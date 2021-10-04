@@ -1,0 +1,20 @@
+.NewGame .checkbox {
+    margin: 1em;
+    display: block;
+  }
+
+  .NewGame .checkbox label:before {
+    /* top: 5px !important; */
+    height: 2.2em !important;
+    width: 4.5em !important;
+  }
+
+  .NewGame .checkbox label:after {
+    /* top: 5px !important; */
+    height: 2.2em !important;
+    width: 2.2em !important;
+  }
+
+  .NewGame .checkbox.checked label:after {
+    left: 2.5em !important;
+  }

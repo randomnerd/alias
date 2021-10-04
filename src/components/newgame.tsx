@@ -1,9 +1,9 @@
-import { Checkbox, Label, Segment } from 'semantic-ui-react';
-import { Slider } from 'react-semantic-ui-range';
-import { CommonStore } from '../../stores/common.store'
-import { useState } from 'react';
+import React, { useState } from 'react'
+import { Checkbox, Label, Segment } from 'semantic-ui-react'
+import { Slider } from 'react-semantic-ui-range'
+import '../css/newgame.css'
 
-function NewGame({ store }: { store: CommonStore }) {
+export const NewGame = () => {
     const [wordCount, setWordCount] = useState(30)
     const [roundTime, setRoundTime] = useState(60)
     const [skipPenalty, setSkipPenalty] = useState(true)
