@@ -1,5 +1,3 @@
-// import { runInAction, values } from 'mobx'
-// import { observer } from 'mobx-react-lite';
 import { RefObject, useRef } from 'react';
 import {
     Button,
@@ -8,8 +6,6 @@ import {
     Input,
     Card,
 } from 'semantic-ui-react';
-// import { CommonStore } from '../../stores/common.store';
-// import { Category, Word } from '../../stores/words.store'
 
 const WordView = ({ word }: any) => (
     <Label>
@@ -104,15 +100,16 @@ const Categories = () => {
 
     return (
         <div className="Categories">
-            <CategoryListView />
             <Input
                 ref={inputRef}
                 type="text"
-                placeholder='Category name'
+                size="large"
+                placeholder='Name a new word category...'
                 fluid
                 icon={addCategoryIcon}
                 onKeyUp={inputKeyUp}
             />
+            <CategoryListView />
         </div>
     );
 }

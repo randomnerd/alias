@@ -3,8 +3,7 @@ import {
     Button,
     Icon,
     Input,
-    Card,
-    Segment
+    Card
 } from 'semantic-ui-react'
 import { persist } from 'effector-storage/local'
 import { createStore, createApi } from 'effector'
@@ -47,12 +46,6 @@ const teamApi = createApi($teams, {
 })
 const changeTeamInput = teamInputApi.setValue.prepend(
     (e: any) => e.currentTarget.value
-)
-const submitTeam = teamApi.create.prepend(
-    (e: any) => e.currentTarget.value
-)
-const submitRemoveTeam = teamApi.removeTeam.prepend(
-    (e: any) => e.currentTarget.Team.value
 )
 
 const useTeam = (name: string) => useStoreMap({
@@ -110,18 +103,18 @@ const Teams = () => {
     }
 
     return (
-        <Segment className="Teams">
-            <TeamListView />
-            <Input fluid
+        <div className="Teams">
+            <Input fluid size="large"
                 id='teamName'
                 type="text"
-                placeholder='Team name'
+                placeholder='Name a new team...'
                 icon={addTeamIcon}
                 onKeyUp={inputKeyUp}
                 onChange={changeTeamInput}
                 value={teamInputValue}
             />
-        </Segment>
+            <TeamListView />
+        </div>
     );
 }
 

@@ -1,15 +1,15 @@
-import React from 'react';
-import { Button, Container } from 'semantic-ui-react'
+import React from 'react'
 import { Link } from 'wouter'
+import { Button } from 'semantic-ui-react'
 
 const Start = () => (
-    <Container className="Start">
+    <div className="Start">
         <Button.Group vertical fluid>
             <Button primary>New game</Button>
             <Link href="/teams"><Button>Manage teams</Button></Link>
-            <Button>Manage words</Button>
+            <Link href="/words"><Button>Manage words</Button></Link>
         </Button.Group>
-    </Container>
+    </div>
 );
 
 export default Start

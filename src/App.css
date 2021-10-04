@@ -1,9 +1,15 @@
 body {
-  padding: 1em;
+  padding: 0;
+  margin: 0;
 }
 
 .Start .button {
   justify-content: center !important;
+}
+
+.ContentWrapper {
+  position: 'absolute' !important;
+  width: '100%' !important;
 }
 
 .App button.back {
@@ -38,5 +44,5 @@ body {
 }
 
 .Teams .input {
-  margin-top: 1em !important;
+  margin-bottom: 1.5em !important;
 }
