@@ -6,9 +6,15 @@ import '../css/start.css'
 const Start = () => (
     <div className="Start">
         <Button.Group vertical fluid>
-            <Button primary>New game</Button>
-            <Link href="/teams"><Button>Manage teams</Button></Link>
-            <Link href="/words"><Button>Manage words</Button></Link>
+            <Link href="/newgame">
+                <Button primary>New game</Button>
+            </Link>
+            <Link href="/teams">
+                <Button>Teams</Button>
+            </Link>
+            <Link href="/words">
+                <Button>Words &amp; categories</Button>
+            </Link>
         </Button.Group>
     </div>
 );

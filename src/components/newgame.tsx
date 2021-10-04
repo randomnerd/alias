@@ -3,7 +3,7 @@ import { Checkbox, Label, Segment } from 'semantic-ui-react'
 import { Slider } from 'react-semantic-ui-range'
 import '../css/newgame.css'
 
-export const NewGame = () => {
+const NewGame = () => {
     const [wordCount, setWordCount] = useState(30)
     const [roundTime, setRoundTime] = useState(60)
     const [skipPenalty, setSkipPenalty] = useState(true)

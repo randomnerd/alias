@@ -1,10 +1,9 @@
 import { SWRConfig } from 'swr'
 import React, { lazy, Suspense } from 'react'
-import { Helmet, HelmetProvider } from 'react-helmet-async'
 import { Route, Switch, useLocation } from 'wouter'
 import { useTransition, animated } from 'react-spring'
+import { Helmet, HelmetProvider } from 'react-helmet-async'
 import { Button, Container, Header, Icon, Segment } from 'semantic-ui-react'
-import 'semantic-ui-css/semantic.min.css'
 import './App.css'
 
 const Start = lazy(() => import("./components/start"));
@@ -37,21 +36,23 @@ const Content = () => {
     })
     return transitions((props, item) => (
         <animated.div
-            className="ContentWrapper ui container"
+            className="ContentWrapper"
             style={{
                 ...props,
-                position: 'absolute',
-                width: '100%'
+                width:    '100%',
+                position: 'absolute'
             }}
         >
-            <Segment basic>
-                <Switch location={item}>
-                    <Route path="/" component={Start} />
-                    <Route path="/teams" component={Teams} />
-                    <Route path="/newgame" component={NewGame} />
-                    <Route path="/words" component={Categories} />
-                </Switch>
-            </Segment>
+            <Container>
+                <Segment basic>
+                    <Switch location={item}>
+                        <Route path="/"        component={Start} />
+                        <Route path="/teams"   component={Teams} />
+                        <Route path="/newgame" component={NewGame} />
+                        <Route path="/words"   component={Categories} />
+                    </Switch>
+                </Segment>
+            </Container>
         </animated.div>
     ))
 }
