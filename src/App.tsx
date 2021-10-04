@@ -1,28 +1,22 @@
 import { SWRConfig } from 'swr'
 import { Route, Switch, Router } from 'wouter'
 import { useTransition, animated } from 'react-spring'
-import { Helmet, HelmetProvider } from 'react-helmet-async'
 import { Button, Container, Header, Icon, Segment } from 'semantic-ui-react'
 import React, { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import './App.css'
 
 const currentLoc = () => window.location.hash.replace("#", "") || "/";
-
 const useHashLocation = () => {
   const [loc, setLoc] = useState(currentLoc());
-
   useEffect(() => {
     const handler = () => setLoc(currentLoc());
-
-    // subscribe on hash changes
     window.addEventListener("hashchange", handler);
     return () => window.removeEventListener("hashchange", handler);
   }, []);
 
   const navigate = useCallback(to => (window.location.hash = to), []);
   return [loc, navigate];
-};
-
+}
 
 const Start = lazy(() => import("./components/start"));
 const Teams = lazy(() => import("./components/teams"));
@@ -113,20 +107,9 @@ const Loader = () => (
 const Layout = ({ cache }: any) => {
     return (
         <SWRConfig value={{ provider: () => new Map(cache) }}>
-            <HelmetProvider>
-                <Helmet>
-                    <meta
-                        name="viewport"
-                        content="width=device-width, initial-scale=1"
-                    />
-                    <meta charSet="UTF-8" />
-                    <link rel="stylesheet" href="//cdn.esm.sh/v53/semantic-ui-css/semantic.min.css" />
-                    <title>ALIAS</title>
-                </Helmet>
-                <Suspense fallback={<Loader />}>
-                    <App />
-                </Suspense>
-            </HelmetProvider>
+            <Suspense fallback={<Loader />}>
+                <App />
+            </Suspense>
         </SWRConfig>
     );
 }
