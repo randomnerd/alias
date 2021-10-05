@@ -3,8 +3,8 @@ import { SWRConfig } from 'swr'
 import ReactDOM from 'react-dom'
 import React, { Suspense, lazy } from 'react'
 // import reportWebVitals from './reportWebVitals'
-
-const App = lazy(() => import("./App"))
+import App from './App'
+// const App = lazy(() => import("./App"))
 
 const Loader = () => (
     <div className="LoaderWrapper">

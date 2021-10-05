@@ -1,4 +1,4 @@
-import { Route, Switch, Router } from 'wouter'
+import { Route, Switch, Router, Link } from 'wouter'
 import { useTransition, animated } from 'react-spring'
 import React, { lazy, useCallback, useEffect, useState } from 'react'
 import { Button, Container, Header, Icon, Segment } from 'semantic-ui-react'
@@ -24,10 +24,25 @@ const useHashLocation = () => {
   return [loc, navigate];
 }
 
-const Start = lazy(() => import("./components/start"));
+// const Start = lazy(() => import("./components/start"));
 const Teams = lazy(() => import("./components/teams"));
 const NewGame = lazy(() => import("./components/newgame"));
 const Categories = lazy(() => import("./components/categories"));
+const Start = () => (
+    <div className="Start">
+        <Button.Group vertical fluid>
+            <Link href="/newgame">
+                <Button primary>New game</Button>
+            </Link>
+            <Link href="/teams">
+                <Button>Teams</Button>
+            </Link>
+            <Link href="/words">
+                <Button>Words &amp; categories</Button>
+            </Link>
+        </Button.Group>
+    </div>
+);
 
 const GoBack = () => {
     const [location] = useHashLocation()
