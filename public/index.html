@@ -2,10 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
       html {
+        font-display: optional;
         position: relative;
         max-width: 600px;
         margin: 0 auto;
@@ -18,6 +18,7 @@
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
           'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
           sans-serif;
+        font-display: optional;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         height: 100%;
@@ -80,6 +81,12 @@
         transform: translate(-50%, -50%);
       }
     </style>
+    <link
+        rel="preload"
+        href="//cdn.esm.sh/v53/semantic-ui-css/semantic.min.css"
+        as="style"
+        onload="this.onload=null;this.rel='stylesheet'"
+    />
     <meta name="theme-color" content="#000000" />
     <meta
       name="description"
