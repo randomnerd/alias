@@ -1,12 +1,3 @@
-.container {
-  contain: content !important;
-}
-
-.ContentWrapper {
-  position: 'absolute' !important;
-  width: '100%' !important;
-}
-
 .App button.back {
   position: absolute;
   margin-top: 0 !important;
