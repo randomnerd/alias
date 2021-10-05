@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { Checkbox, Label, Segment } from 'semantic-ui-react'
 import { Slider } from 'react-semantic-ui-range'
+import 'semantic-ui-css/components/label.css'
+import 'semantic-ui-css/components/checkbox.css'
 import '../css/newgame.css'
 
 const NewGame = () => {

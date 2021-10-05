@@ -3,6 +3,13 @@ import { useTransition, animated } from 'react-spring'
 import React, { lazy, useCallback, useEffect, useState } from 'react'
 import { Button, Container, Header, Icon, Segment } from 'semantic-ui-react'
 // import 'semantic-ui-css/semantic.min.css'
+import 'semantic-ui-css/components/reset.css'
+import 'semantic-ui-css/components/site.css'
+import 'semantic-ui-css/components/container.css'
+import 'semantic-ui-css/components/segment.css'
+import 'semantic-ui-css/components/button.css'
+import 'semantic-ui-css/components/header.css'
+import 'semantic-ui-css/components/icon.css'
 import './App.css'
 
 const currentLoc = () => window.location.hash.replace("#", "") || "/";
