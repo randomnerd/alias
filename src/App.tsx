@@ -65,12 +65,12 @@ const Content = () => {
     const transitions = useTransition(location, {
         initial: { opacity: 0, transform: 'translate3d(0%,0,0)' },
         from:    location === '/'
-            ? { opacity: 0, transform: 'translate3d(-200%,0,0)' }
-            : { opacity: 0, transform: 'translate3d(200%,0,0)' },
+            ? { opacity: 0, transform: 'translate3d(-100%,0,0)' }
+            : { opacity: 0, transform: 'translate3d(100%,0,0)' },
         enter:   { opacity: 1, transform: 'translate3d(0%,0,0)' },
         leave:   location === '/'
-            ? { opacity: 0, transform: 'translate3d(200%,0,0)' }
-            : { opacity: 0, transform: 'translate3d(-200%,0,0)' },
+            ? { opacity: 0, transform: 'translate3d(100%,0,0)' }
+            : { opacity: 0, transform: 'translate3d(-100%,0,0)' },
         config:  {
             duration: 300,
         },
