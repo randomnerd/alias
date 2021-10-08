@@ -1,6 +1,5 @@
 import { persist } from 'effector-storage/local'
 import { createStore, createApi } from 'effector'
-import { useStoreMap } from 'effector-react'
 
 export interface Team {
     name: string
@@ -10,10 +9,6 @@ export interface Team {
 export interface TeamList { [name: string]: Team }
 
 export const newTeam = (name: string): Team => ({ name, wins: 0 })
-export const $teamInput = createStore('')
-export const teamInputApi = createApi($teamInput, {
-    setValue: (_, value: string) => value
-})
 export const $teams = createStore<TeamList>({})
 export const $teamNames = $teams.map(teams => Object.keys(teams))
 export const teamApi = createApi($teams, {
@@ -37,18 +32,13 @@ export const teamApi = createApi($teams, {
         return { ...state, [name]: teamCopy }
     }
 })
+export const $teamInput = createStore('')
+export const teamInputApi = createApi($teamInput, {
+    setValue: (_, value: string) => value
+})
 export const changeTeamInput = teamInputApi.setValue.prepend(
     (e: any) => e.currentTarget.value
 )
-
-export const useTeam = (name: string) => useStoreMap({
-    store: $teams,
-    keys: [name],
-    fn(state: TeamList, [_name]: string[]): Team | null {
-        if (_name in state) return state[_name]
-        return null
-    },
-})
+persist({ store: $teamInput, key: 'teamInput' })
 
 persist({ store: $teams, key: 'teams' })
-persist({ store: $teamInput, key: 'teamInput' })

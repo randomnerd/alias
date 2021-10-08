@@ -5,20 +5,31 @@ import {
     Input,
     Card,
 } from 'semantic-ui-react'
-import { useList, useStore } from 'effector-react'
+import { useList, useStore, useStoreMap } from 'effector-react'
 import 'semantic-ui-css/components/input.css'
 import 'semantic-ui-css/components/card.css'
 import 'semantic-ui-css/components/button.css'
 import 'semantic-ui-css/components/icon.css'
 import '../css/teams.css'
 import {
-    useTeam,
     teamApi,
     $teamNames,
     $teamInput,
     teamInputApi,
-    changeTeamInput
+    changeTeamInput,
+    $teams,
+    Team,
+    TeamList
 } from '../stores/teams'
+
+export const useTeam = (name: string) => useStoreMap({
+    store: $teams,
+    keys: [name],
+    fn(state: TeamList, [_name]: string[]): Team | null {
+        if (_name in state) return state[_name]
+        return null
+    },
+})
 
 const TeamView = ({ teamName }: { teamName: string }) => {
     const team = useTeam(teamName)
