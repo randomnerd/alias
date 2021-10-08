@@ -5,66 +5,20 @@ import {
     Input,
     Card,
 } from 'semantic-ui-react'
-import { persist } from 'effector-storage/local'
-import { createStore, createApi } from 'effector'
-import { useList, useStore, useStoreMap } from 'effector-react'
+import { useList, useStore } from 'effector-react'
 import 'semantic-ui-css/components/input.css'
 import 'semantic-ui-css/components/card.css'
 import 'semantic-ui-css/components/button.css'
 import 'semantic-ui-css/components/icon.css'
 import '../css/teams.css'
-
-interface Team {
-    name: string
-    wins: number
-}
-
-interface TeamList { [name: string]: Team }
-
-const newTeam = (name: string): Team => ({ name, wins: 0 })
-const $teamInput = createStore('')
-const teamInputApi = createApi($teamInput, {
-    setValue: (_, value: string) => value
-})
-const $teams = createStore<TeamList>({})
-const $teamNames = $teams.map(teams => Object.keys(teams))
-const teamApi = createApi($teams, {
-    create(state, name: string): TeamList | undefined {
-        if (!name || name in state) return
-        return { ...state, [name]: newTeam(name) }
-    },
-    addTeam(state: TeamList, team: Team) {
-        if (team.name in state) return
-        return { ...state, [team.name]: team }
-    },
-    removeTeam(state: TeamList, name: string) {
-        if (!name || !(name in state)) return
-        state = { ...state }
-        delete state[name]
-        return state
-    },
-    teamWon(state: TeamList, name: string) {
-        const teamCopy = { ...state[name] }
-        teamCopy.wins++
-        return { ...state, [name]: teamCopy }
-    }
-})
-const changeTeamInput = teamInputApi.setValue.prepend(
-    (e: any) => e.currentTarget.value
-)
-
-const useTeam = (name: string) => useStoreMap({
-    store: $teams,
-    keys: [name],
-    fn(state: TeamList, [_name]: string[]): Team | null {
-        if (_name in state) return state[_name]
-        return null
-    },
-})
-
-persist({ store: $teams, key: 'teams' })
-persist({ store: $teamInput, key: 'teamInput' })
-
+import {
+    useTeam,
+    teamApi,
+    $teamNames,
+    $teamInput,
+    teamInputApi,
+    changeTeamInput
+} from '../stores/teams'
 
 const TeamView = ({ teamName }: { teamName: string }) => {
     const team = useTeam(teamName)

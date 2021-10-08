@@ -1,10 +1,8 @@
 import 'raf/polyfill'
-import { SWRConfig } from 'swr'
 import ReactDOM from 'react-dom'
-import React, { Suspense, lazy } from 'react'
+import React, { Suspense } from 'react'
 // import reportWebVitals from './reportWebVitals'
 import App from './App'
-// const App = lazy(() => import("./App"))
 
 const Loader = () => (
     <div className="LoaderWrapper">
@@ -13,11 +11,9 @@ const Loader = () => (
 )
 
 ReactDOM.hydrate(
-    <SWRConfig value={{ provider: () => new Map() }}>
-        <Suspense fallback={<Loader />}>
-            <App />
-        </Suspense>
-    </SWRConfig>,
+    <Suspense fallback={<Loader />}>
+        <App />
+    </Suspense>,
     document.getElementById('root')
 )
 
