@@ -8,9 +8,9 @@ import {
 } from 'semantic-ui-react'
 import 'semantic-ui-css/components/label.css'
 import 'semantic-ui-css/components/card.css'
-import 'semantic-ui-css/components/input.css'
 import 'semantic-ui-css/components/icon.css'
 import 'semantic-ui-css/components/button.css'
+import 'semantic-ui-css/components/input.css'
 import '../css/categories.css'
 import {
     $categoryInput,
